@@ -1,0 +1,418 @@
+# i3 config file
+#
+# Please see http://i3wm.org/docs/userguide.html for a complete reference!
+
+# Modifier as Super key.
+set $mod Mod4
+
+# Hyper_L quick press for easyfocus.
+bindsym --release Hyper_L exec i3-easyfocus -a
+# bindsym --release Caps_Lock exec i3-easyfocus -a
+
+# Daemonize emacs on startup.
+# exec --no-startup-id emacs --daemon 
+
+# Window navigation with i3-easyfocus; visible windows for all outputs.
+# bindsym $mod+space exec i3-easyfocus -a
+
+# Window title font; also bar font as default.
+font pango:DejaVu Sans Mono 9
+
+# Mouse+$mod to drag floating windows.
+floating_modifier $mod
+
+# Layout of new containers.
+workspace_layout tabbed
+
+# Start a terminal.
+bindsym $mod+Return exec urxvt
+# Start a browser.
+set $browser qutebrowser
+bindsym $mod+Shift+Return exec $browser
+
+# Move between windows with <Tab>.
+bindsym $mod+Tab exec /usr/local/bin/focus-last.py
+
+# Kill focused window.
+ bindsym $mod+q kill
+
+# Rofi dmenu replacement.
+# flags: -font, -color-normal, -color-window
+# bindsym $mod+d exec rofi -show run -sidebar-mode
+# bindsym $mod+Control+d exec rofi -show drun -sidebar-mode
+bindsym $mod+Shift+d exec rofi -show ssh -sidebar-mode
+bindsym $mod+d exec ~/.config/i3/rofi.sh
+
+set $mclip ~/.config/rofi/rofi-clipboard-manager/mclip.py
+bindsym $mod+Control+d exec rofi -modi "clipboard:$mclip menu" -show clipboard && $mclip paste
+exec --no-startup-id $mclip daemon
+
+# Change focus.
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
+
+# Change focus with arrow keys.
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# Move focused window.
+bindsym $mod+Shift+h move left 100px
+bindsym $mod+Shift+j move down 100px
+bindsym $mod+Shift+k move up 100px 
+bindsym $mod+Shift+l move right 100px
+
+# Move focused window with arrow keys.
+bindsym $mod+Shift+Left move left 100px
+bindsym $mod+Shift+Down move down 100px
+bindsym $mod+Shift+Up move up 100px
+bindsym $mod+Shift+Right move right 100px
+
+# Split horizontal/vertical orientation.
+bindsym $mod+b split h
+bindsym $mod+v split v
+
+# Enter fullscreen mode for the focused container.
+bindsym $mod+f fullscreen toggle
+
+# Container layouts.
+bindsym $mod+w layout tabbed
+bindsym $mod+s layout stacked
+bindsym $mod+e layout toggle split
+
+# Change focus between tiling/floating windows.
+bindsym $mod+g focus mode_toggle
+# Toggle tiling/floating.
+bindsym $mod+Shift+g floating toggle
+
+# Focus parent/child container.
+bindsym $mod+a focus parent
+bindsym $mod+z focus child
+
+# Switch to workspace.
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# Move focused container to workspace.
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+
+# Restart i3.
+bindsym $mod+Shift+r restart
+
+# Exit i3 and log out of X session.
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session. -b 'Yes, exit i3' 'i3-msg exit'"
+
+# Resize Window (You Can also use the mouse for that)
+mode "resize" {
+        bindsym h resize shrink width 2 px or 2 ppt
+        bindsym j resize grow height 2 px or 2 ppt
+        bindsym k resize shrink height 2 px or 2 ppt
+	bindsym l resize grow width 2 px or 2 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 2 px or 2 ppt
+        bindsym Down resize grow height 2 px or 2 ppt
+        bindsym Up resize shrink height 2 px or 2 ppt
+        bindsym Right resize grow width 2 px or 2 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Gap values for i3 windows.
+gaps inner 6
+gaps outer -7
+
+# Gaps disabled if only one container is on workspace.
+# smart_gaps on
+
+# Moving scratchpads
+bindsym $mod+Control+h move absolute position 0 px 33 px, resize set 958 1045
+bindsym $mod+Control+l move absolute position 958 px 33 px, resize set 958 1045
+bindsym $mod+Control+j move absolute position 480 px 145 px, resize set 960 790
+bindsym $mod+Control+k move absolute position 598 px 1 px, resize set 736 90
+bindsym $mod+Control+u move absolute position 1460 px 822 px, resize set 458 256
+
+# Move current window to scratchpad
+bindsym $mod+Shift+minus move scratchpad 
+
+# Select region; print screen; view image with feh.
+bindcode --release 107 exec print.sh
+
+# Open new emacsclient.
+bindsym $mod+Control+Return exec emacsclient -c -a ""
+
+# Cycle scratchpad windows.
+bindsym $mod+minus scratchpad show 
+
+# Use feh/hsetroot for wallpaper/background color
+exec_always --no-startup-id hsetroot -solid "#000000"
+# exec --no-startup-id feh --bg-fill ~/docs/wallpaper/wallhaven-489386.jpg
+
+# exec --no-startup-id "compton -b --config ~/.config/compton/compton.conf -d :0 -i 0.99"
+# exec --no-startup-id "compton --backend glx --paint-on-overlay --vsync opengl -b -c -r 16 -l -24 -t -12 -d :0"
+exec --no-startup-id "compton -b -d :0"
+# exec --no-startup-id "compton --backend glx --paint-on-overlay --vsync opengl -b -c -d :0"
+# flags: b=daemon, r=shadow-radius, l=shadow-offset-x, t=shadow-offset-y,
+# d=display to be managed, i=opacity of inactive windows.
+
+bindsym $mod+Shift+t exec /usr/bin/compton-trans -c +15
+bindsym $mod+t exec /usr/bin/compton-trans -c -10
+bindsym $mod+Control+t exec /usr/bin/compton-trans -s -10
+# bindsym $mod+Control+t exec /usr/bin/compton-trans -n "*" 95
+
+
+
+# Colorscheme definitions
+set $white    #ffffff
+set $black    #000000
+set $greyd    #3f3f3f
+set $wgreen   #86aa92
+set $rosepale #ffc2c6
+set $gmarble  #dcdccc
+set $eb444    #f0f0f0
+
+set $sand     #D7AF87
+set $turf     #87875F
+set $salmon1  #AF8787
+set $salmon   #AF5F5F
+set $earth    #875F5F
+set $grey     #CCCCCC
+set $clay     #AF3C00
+set $red      #AF1600
+set $lavend   #5F5F87
+set $medpurp  #9370DB
+
+
+##################
+# Windows/Titles #
+##################
+
+# Prevent focus to follow mouse movements
+focus_follows_mouse no
+
+# Disable/enable titlebars
+for_window [class="^.*"] border normal 0
+# for_window [class="^.*"] border pixel 2
+
+# hide_edge_borders none
+
+# Window colors
+# class	  	   	   border  backgr. text    indicator child_border
+client.focused		   #dcdccc #3f3f3f #dcdccc #dcdccc   #dcdccc
+client.focused_inactive    #3f3f3f #3f3f3f #dcdccc #dcdccc   #000000
+client.unfocused	   #000000 #000000 #dcdccc #dcdccc   #000000
+# client.urgent
+
+# dynamically set current window title name
+bindsym $mod+c exec /usr/local/bin/title_format.sh
+# bindsym $mod+Control+c 
+bindsym $mod+Shift+c exec /usr/local/bin/title_format.sh parent
+# bindsym $mod+c exec i3-msg title_format.sh `zenity --title="i3-msg title_format" --text "Enter a title" --entry)`
+# bindsym $mod+Shift+c focus parent, exec i3-msg title_format.sh `zenity --title="i3-msg title_format" --text "Enter a title" --entry)`
+
+for_window [class="^.*"] title_format "<b>%title</b>"
+
+# Special colors for certain window classes.
+for_window [class="(?i)qutebrowser"] title_format "<span background='#6ab7f1' foreground='#000000'><b> > </b></span><span foreground='#6ab7f1'><b> %title</b></span>"
+for_window [class="(?i)emacs"] title_format "<span background='#9fc59f' foreground='#000000'><b> > </b></span><span foreground='#9fc59f'><b> %title</b></span>"
+for_window [class="(?i)urxvt"] title_format "<span background='#ff5050' foreground='#000000'><b> > </b></span><span foreground='#ff5050'><b> %title</b></span>"
+for_window [class="(?i)zathura"] title_format "<span background='#fff496' foreground='#000000'><b> > </b></span><span foreground='#fff496'><b> %title</b></span>"
+for_window [class="(?i)libreoffice"] title_format "<span background='#ff9f5f' foreground='#000000'><b> > </b></span><span foreground='#ff9f5f'><b> %title</b></span>"
+for_window [class="(?i)mpv"] title_format "<span background='#9f78e1' foreground='#000000'><b> > </b></span><span foreground='#9f78e1'><b> %title</b></span>"
+
+for_window [class="(?i)anki"] title_format "<span background='#dcdccc' foreground='#000000'><b> > </b></span><span foreground='#dcdccc'><b> %title</b></span>"
+for_window [class="(?i)VirtualBox Machine"] title_format "<span background='#dcdccc' foreground='#000000'><b> > </b></span><span foreground='#dcdccc'><b> %title</b></span>"
+for_window [class="(?i)feh"] title_format "<span background='#dcdccc' foreground='#000000'><b> > </b></span><span foreground='#dcdccc'><b> %title</b></span>"
+for_window [class="(?i)deluge"] title_format "<span background='#dcdccc' foreground='#000000'><b> > </b></span><span foreground='#dcdccc'><b> %title</b></span>"
+
+
+###########
+# Polybar #
+###########
+
+# Polybar exec on startup
+# exec_always --no-startup-id /home/mkh/.config/polybar/launch.sh
+
+# Refresh polybar
+bindsym $mod+F11 exec --no-startup-id /home/mkh/.config/polybar/launch.sh
+
+# Toggle show polybar
+bindsym $mod+Shift+F11 exec --no-startup-id polybar-msg cmd toggle
+# bindsym $mod+Shift+b bar mode toggle
+
+# Kill polybar
+bindsym $mod+Control+Shift+F11 exec --no-startup-id pkill polybar
+
+
+##################################
+# Startup environment on keybind #
+##################################
+
+# for_window [instance="term"] move scratchpad
+
+exec --no-startup-id urxvt
+# exec --no-startup-id emacsclient -c --socket-name /tmp/emacs1000/server
+
+# bindsym $mod+F12 exec --no-startup-id emacsclient -c -e "(consel-recentf)" -a "", move right
+bindsym $mod+F12 exec --no-startup-id /home/mkh/.config/i3/emce.sh
+
+#--------
+# Monitors
+
+# exec --no-startup-id xrandr --output DP2-2 --right-of eDP1 --output DP2-1 --left-of eDP1 --auto
+
+
+#-----------
+# Scratchpad
+
+# Scratchpad urxvt terminal
+bindsym $mod+m [con_mark="^term"] scratchpad show, border 1pixel
+bindsym $mod+Shift+m mark "term", move scratchpad
+# for_window [con_mark="^term"] resize set 640 480
+
+# Scratchpad emacsclient notes
+bindsym $mod+n [con_mark="^edit$"] scratchpad show, border 1pixel
+# bindsym $mod+n [con_mark="^edit$"] scratchpad show, border 1pixel, move absolute position center
+bindsym $mod+Shift+n mark "edit", move scratchpad
+
+# Scratchpad mpv video
+bindsym $mod+p [con_mark="mpv"] scratchpad show, border 1pixel
+bindsym $mod+Shift+p mark "mpv", move scratchpad
+
+# Scratchpad qutebrowser slack
+bindsym $mod+i [con_mark="slack"] scratchpad show, border 1pixel
+bindsym $mod+Shift+i mark "slack", move scratchpad
+
+# Scratchpad zathura
+bindsym $mod+o [con_mark="pdf"] scratchpad show, border 1pixel
+bindsym $mod+Shift+o mark "pdf", move scratchpad
+
+bindsym $mod+u [con_mark="video"] scratchpad show, border 1pixel
+bindsym $mod+Shift+u mark "video", move scratchpad
+
+
+#--------
+# Dropbox
+
+# Exec dropbox on startup
+exec --no-startup-id /usr/bin/dropbox
+
+
+###############
+# End of file #
+###############
+
+
+###############
+# Unused code #
+###############
+
+# Mode pass-through; toggles i3 mod keybind.
+# mode "pass-through" {
+#      bindsym Alt_R mode "default"
+# }
+# bindsym Alt_R mode "pass-through"
+
+#---------------
+# Autostart windows
+
+# exec --no-startup-id calc -name calc; exec urxvt -e
+#for_window [instance="term"] move to scratchpad
+#for_window [instance="edit"] move to scratchpad
+
+# exec --no-startup-id "urxvt -name term; move scratchpad"
+# exec --no-startup-id "emacsclient -a "" -c ~/Dropbox/org//gtd/gtd.org; move scratchpad'"
+
+# exec --no-startup-id urxvt
+# exec --no-startup-id "sleep 1; i3-msg '[instance=urxvt] mark term, move scratchpad'"
+
+# exec --no-startup-id "sleep 1; emacsclient ~/Dropbox/org/note.org -c"
+# exec --no-startup-id "sleep 2; i3-msg '[instance=emacs] mark edit, move scratchpad'"
+
+#--------------
+# Window naming
+
+# Give focused window a prefix.
+# bindsym $mod+shift+s title_format "Important | %title"
+
+#-----------
+# Screenshot
+
+# Screen capture
+# bindsym --release $mod+Space exec printscrn.sh
+# bindsym --relese $mod+y exec scrot "~/Dropbox/screencaps/%Y-%m-%d_$wx$h.png" -s -q 100 -e "feh"
+# bindsym $mod+y exec /usr/bin/scrot '~/Dropbox/screencaps/%Y-%m-%d_$wx$h.png' -s -q 100 -e 'feh'
+# scrot ~/Dropbox/screencaps/%Y-%m-%d_$wx$h.png -s -q 100 -e feh
+
+
+#########
+# i3bar #
+#########
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+    # font pango:Noto Sans 10
+# bar {
+#     font pango: DejaVu Sans Mono 10
+#     position top
+#     #status_command i3status
+#     status_command i3blocks
+
+#     colors {
+#     background #3f3f3f
+#     statusline #dcdccc
+#     }
+# }
+
+
+
+# # Binding mode
+
+# # Press $mod+o followed by either f, t, Escape or Return to launch firefox,
+# # thunderbird or return to the default mode, respectively.
+# set $mode_launcher Launch: [f]irefox [t]hunderbird
+# bindsym $mod+o mode "$mode_launcher"
+
+# mode "$mode_launcher" {
+#     bindsym f exec firefox
+#     bindsym t exec thunderbird
+
+#     bindsym Escape mode "default"
+#     bindsym Return mode "default"
+# }
+
+
+# # Volume control -> Moved to ~/.xbindkeysrc for media keys
+# bindsym $mod+F1 exec amixer set Master 0
+# bindsym $mod+F2 exec amixer set Master 5%-
+# bindsym $mod+F3 exec amixer set Master 5%+
+
+# # Brightness control -> Moved to ~/.xbindkeysrc for media keys
+# bindsym $mod+Shift+F6 exec light -S 100
+# bindsym $mod+F6 exec light -A 5
+# bindsym $mod+F5 exec light -U 5
+# bindsym $mod+Shift+F5 exec light -S 5

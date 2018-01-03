@@ -1,0 +1,16 @@
+VirtualBox GUI VM Selector Window 5.1.28 r117968 linux.amd64 (Sep 14 2017 22:01:36) release log
+00:00:00.077036 Log opened 2017-10-19T18:00:36.727090000Z
+00:00:00.077037 Build Type: release
+00:00:00.077039 OS Product: Linux
+00:00:00.077039 OS Release: 4.13.5-1-ARCH
+00:00:00.077040 OS Version: #1 SMP PREEMPT Fri Oct 6 09:58:47 CEST 2017
+00:00:00.077051 DMI Product Name: 20HHCTO1WW
+00:00:00.077054 DMI Product Version: ThinkPad P51
+00:00:00.077076 Host RAM: 64151MB (62.6GB) total, 52400MB (51.1GB) available
+00:00:00.077078 Executable: /usr/lib/virtualbox/VirtualBox
+00:00:00.077079 Process ID: 19030
+00:00:00.077079 Package type: LINUX_64BITS_GENERIC (OSE)
+00:00:00.077091 Qt version: 5.9.2
+00:00:00.094715 GUI: UIMediumEnumerator: Medium-enumeration started...
+00:00:00.276357 GUI: UIMediumEnumerator: Medium-enumeration finished!
+00:00:00.280639 GUI: UIDesktopWidgetWatchdog::sltHandleHostScreenAvailableGeometryCalculated: Screen 0 work area is actually resized to: 965x29 x 945x1041

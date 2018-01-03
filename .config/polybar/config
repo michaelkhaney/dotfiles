@@ -1,0 +1,632 @@
+[colors]
+;background = ${xrdb:color0:#222}
+background = #3f3f3f
+background-alt = #444
+;foreground = ${xrdb:color7:#222}
+foreground = #dcdccc
+foreground-alt = #6f6f6f
+; foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+
+[bar/mkh]
+monitor = ${env:MONITOR:eDP1}
+; monitor = ${env:MONITOR:HDMI-1}
+; Don't require monitor in connected state; xrandr can give false reports
+monitor-strict = false
+
+;; Put bar at top of screen
+bottom = false
+
+; Dimensions as pixel value or percentage
+width = 100%
+height = 20
+; offset-x = 1%
+; offset-y = 1%
+; radius = 6.0
+
+; The `modules-center` area in actual center (not based on size of other blocks)
+fixed-center = true
+
+background = #000000
+foreground = ${colors.foreground}
+
+; Under-/overline pixel size; individual values as {overline,underline}-size
+line-size = 1
+line-color = #6f6f6f
+
+; ; Border values; individual values as border-{left,top,right,bottom}-size
+border-bottom-size = 5
+border-color = #000000
+; border-color = #00000000
+
+; Spaces to add at start/end of bar; individual values as padding-{left,right}
+padding-left = 
+padding-right = 
+
+; Spaces to add before/after each module
+module-margin-left = 
+module-margin-right = 
+
+; Fonts defined using <font-name>;<vertical-offset>
+font-0 = pango:DejaVuSansMono:bold:pixelsize=9:antialias=true;0
+font-1 = FontAwesome:pixelsize=11:antialias=true;0
+font-2 = MaterialIcons:pixelsize=11:antialias=true;0
+font-3 = WunconSiji:pixelsize=11:antialias=true;0
+font-4 = FontLinux:pixelsize=11:antialias=true;0
+
+modules-left = nc wlan wlan3 wlan2 eth space3 pkg
+modules-center = mpd filesystem i3
+modules-right = trash space3 xbacklight volume space3 cpu memory space3 coretemps battery space3 date
+
+; Opacity value between 0.0 and 1.0 used on fade in/out
+; dim-value = 1.0
+
+;;; System tray
+
+; Position of system tray window
+tray-position = right
+; If true, bar will not shift its contents when tray changes
+tray-detached = false
+; tray-padding = 2
+; Tray icon max size
+;; tray-maxsize = 16
+; Enable pseudo transparency
+;; tray-transparent = true
+
+; Background color for tray container
+tray-background = #0063ff
+
+; Pad sides of each tray client
+tray-padding = 2
+
+; Scale factor for tray clients
+tray-scale = 1.0
+
+; Restack bar window and put it above selected WM's root; fixes issue of bar
+; being drawn on top of fullscreen window's
+; wm-restack = i3
+; override-redirect = true
+
+; Fallback click handlers for cycling workspaces with scrolling
+; scroll-up = i3wm-wsnext
+; scroll-down = i3wm-wsprev
+; Disable scrolling globally on polybar to specify wsnext/prev
+; enable-scroll = false
+
+; Enable support for inter-process messaging
+enable-ipc = true
+
+; Requires polybar to be built with xcursor support (xcb-util-cursor)
+; Options = {default, pointer, ns-resize}
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+; [module/subscriber]
+; type = custom/ipc
+; 
+; hook-0 = echo 
+
+[module/weathericons]
+type = custom/script
+interval = 600
+format = <label>
+exec = ~/.config/polybar/weathericons.py
+label-underline = #6f6f6f
+label-font = 1
+
+
+[module/coretemps]
+type = custom/script
+interval = 3
+exec-if = sensors
+exec = ~/.config/polybar/tempcores.sh
+label-underline = #6f6f6f
+
+[module/filesystem]
+type = internal/fs
+interval = 100
+
+mount-0 = /
+mount-1 = /home
+mount-2 = /data
+
+label-mounted = %{F#6ab7f1}%mountpoint%%{F-} %free%
+label-mounted-underline = #6f6f6f
+; label-mounted-background = #3f3f3f
+
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
+label-unmounted-underline = #6f6f6f
+
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
+
+label-song-maxlen = 25
+label-song-ellipsis = true
+
+[module/xbacklight]
+type = internal/xbacklight
+
+; format = <label> <bar>
+; label = BL
+format = <ramp> <label>
+label = %percentage%
+format-underline = #6f6f6f
+
+ramp-0 = "%{F#373737}🌕%{F-}"
+ramp-1 = "%{F#4d4d4d}🌔%{F-}"
+ramp-2 = "%{F#6f6f6f}🌓%{F-}"
+ramp-3 = "%{F#a8a8a8}🌒%{F-}"
+ramp-4 = "%{F#f0f0f0}🌑%{F-}"
+
+; bar-width = 10
+; bar-indicator = |
+; bar-indicator-foreground = #ff
+; bar-indicator-font = 2
+; bar-fill = ─
+; bar-fill-font = 2
+; bar-fill-foreground = #9f78e1
+; bar-empty = ─
+; bar-empty-font = 2
+; bar-empty-foreground = ${colors.foreground-alt}
+
+[module/backlight-acpi]
+inherit = module/xbacklight
+type = internal/backlight
+card = intel_backlight
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format = <label>
+
+; ramp-coreload-0 = ▁
+; ramp-coreload-1 = ▂
+; ramp-coreload-2 = ▃
+; ramp-coreload-3 = ▄
+; ramp-coreload-4 = ▅
+; ramp-coreload-5 = ▆
+; ramp-coreload-6 = ▇
+; ramp-coreload-7 = █
+
+format-prefix = "%{F#6f6f6f}%{F-}"
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #6f6f6f
+label = %percentage:2%
+
+
+[module/pkg]
+type = custom/script
+interval = 1200
+format = <label>
+format-underline = #6f6f6f
+label = "%output%"
+; label = "%output:0:30%"
+exec = ~/.config/polybar/pkg.sh
+label-font = 1
+; exec-if = "ping -q -w 2 -c 1 176.34.135.167 > /dev/null"
+
+[module/memory]
+type = internal/memory
+interval = 10
+
+format = <label>
+
+format-prefix = "  "
+; format-prefix = " "
+; format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #6f6f6f
+label = %percentage_used:2%
+
+[module/wlan]
+type = internal/network
+interface = wlp4s0
+interval = 3
+
+format-connected = <label-connected>
+; format-connected = <ramp-signal> <label-connected>
+format-connected-underline = #6f6f6f
+label-connected = " %essid%"
+; label-connected = "${module/nc.exec}%essid%"
+; label-connected = "%essid%  %{F#6f6f6f}%{F-} %local_ip%  %{F#6f6f6f}%{F-} %downspeed:2%  %signal:2%%"
+; label-connected = %essid% %{F#6f6f6f}%{F-}%downspeed:2% %{F#6f6f6f}%{F-} %local_ip% %{F#6f6f6f}%{F-} %signal:2%%
+
+label-disconnected = " %ifname%"
+; label-disconnected = "%{T3}%{F#6f6f6f}%{F-}%{T-} %ifname%"
+format-disconnected = <label-disconnected>
+format-disconnected-underline = #6f6f6f
+
+; ramp-signal-0 = "%{F#6f6f6f}%{F-}"
+; ramp-signal-1 = "%{F#6f6f6f}%{F-}"
+; ramp-signal-2 = "%{F#6f6f6f}%{F-}"
+; ramp-signal-3 = "%{F#6f6f6f}%{F-}"
+; ramp-signal-4 = "%{F#6f6f6f}%{F-}"
+
+
+[module/wlan2]
+type = internal/network
+interface = wlp4s0
+interval = 3
+label-connected = "  %{F#6f6f6f}%{F-} %local_ip%"
+format-connected-underline = #6f6f6f
+
+
+[module/wlan3]
+type = internal/network
+interface = wlp4s0
+interval = 5
+label-connected =  " %{F#6f6f6f} %{F-}%signal%"
+format-connected-underline = #6f6f6f
+
+
+[module/eth]
+type = internal/network
+interface = enp0s31f6
+interval = 3.0
+
+format-connected-underline = #6f6f6f
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected = %local_ip%
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+[module/date]
+type = internal/date
+interval = 5
+
+date = "%{F#6f6f6f}%{F-} %m-%d"
+date-alt = "%{F#6f6f6f}%{F-} %Y-%m-%d"
+
+time =  "%{T1}%{F#6f6f6f}%{F-}%{T-} %H:%M"
+time-alt =  " %{F#6f6f6f}%{F-} %H:%M:%S"
+
+; format-prefix = 
+; format-prefix-foreground = ${colors.foreground-alt}
+format-underline = #6f6f6f
+
+label = "%time%  %date%"
+
+[module/date1]
+type = internal/date
+interval = 1.1
+
+time =  "%{T1}%{F#6f6f6f}%{F-}%{T-} %H:%M"
+time-alt =  " %{F#6f6f6f}%{F-} %H:%M:%S"
+
+format-underline = #6f6f6f
+
+label = %time%
+
+[module/trash]
+interval = 1
+type = custom/script
+exec = ~/.config/polybar/trash.sh
+format-prefix = "%{F#6f6f6f}%{F-} "
+click-right = rm -rf ~/.local/share/Trash/files/* ;exec paplay ~/.sounds/freedesktop/stereo/trash-empty.oga
+click-left = pcmanfm ~/.local/share/Trash/files
+format-underline = #6f6f6f
+
+[module/volume]
+type = internal/volume
+speaker_mixer = Speaker
+headphone_mixer = Headphone
+headphone_control_numid = 9
+
+format-volume = <label-volume>
+label-volume = " %{T1}%{F#6f6f6f}%{F-}%{T-} %percentage:2%"
+format-volume-underline = #6f6f6f
+format-volume-padding = 1
+
+format-muted-prefix = "%{F#ff5050}%{F-} "
+format-muted-foreground = #dcdccc
+label-muted = %percentage:2%
+format-muted-padding = 1
+format-muted-underline = #6f6f6f
+
+
+; [module/volume]
+; type = internal/volume
+
+; ; format-volume = <label-volume> <bar-volume>
+; format-volume = <ramp-volume> <label-volume>
+; ; label-volume = VOL
+; ; label-volume-foreground = ${root.foreground}
+; label-font = 1
+; ; ramp-font = 1
+
+; format-underline = #4bffdc
+
+; speaker-mixer = Speaker
+; headphone-mixer = Headphone
+
+; ramp-volume-0 = 🔈
+; ramp-volume-1 = 🔉
+; ramp-volume-2 = 🔊
+
+; ramp-headphones-0 = 
+; ramp-headphones-1 = 
+
+; format-muted-prefix = " "
+; format-muted-foreground = ${colors.foreground-alt}
+; label-muted = sound muted
+
+; bar-volume-width = 10
+; bar-volume-foreground-0 = #55aa55
+; bar-volume-foreground-1 = #55aa55
+; bar-volume-foreground-2 = #55aa55
+; bar-volume-foreground-3 = #55aa55
+; bar-volume-foreground-4 = #55aa55
+; bar-volume-foreground-5 = #f5a70a
+; bar-volume-foreground-6 = #ff5555
+; bar-volume-gradient = false
+; bar-volume-indicator = |
+; bar-volume-indicator-font = 2
+; bar-volume-fill = ─
+; bar-volume-fill-font = 2
+; bar-volume-empty = ─
+; bar-volume-empty-font = 2
+; bar-volume-empty-foreground = ${colors.foreground-alt}
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = AC
+
+; Set to highest value (if battery never reports 100% charge)
+full-at = 96
+interval = 3
+
+time-format = %H:%M
+
+format-charging = <animation-charging> <label-charging>
+label-charging = %percentage%
+format-charging-underline = #6f6f6f
+
+format-discharging = <ramp-capacity> <label-discharging>
+label-discharging = "%percentage%"
+; label-discharging = "%percentage% (%time%)"
+format-discharging-underline = #6f6f6f
+
+label-full = " %{T4}%{F#9fc59f}%{F-}%{T-} 00"
+; format-full-prefix = "%{T4}%{F#9fc59f}%{F-}%{T-} "
+; format-full-prefix = "%{T4}%{F#00cd00}%{F-}%{T-} "
+format-full-prefix-foreground = ${colors.foreground-alt}
+format-full-underline = #6f6f6f
+; format-full-underline = #00cd00
+; format-full-background = #00cd00
+
+ramp-capacity-0 = "  "
+ramp-capacity-0-foreground = #f40202
+ramp-capacity-1 = "  "
+ramp-capacity-1-foreground = #ff5050
+; ramp-capacity-1-foreground = #ff8819
+ramp-capacity-2 = "  "
+ramp-capacity-2-foreground = #ff9f5f
+; ramp-capacity-2-foreground = #f4cb24
+ramp-capacity-3 = "  "
+ramp-capacity-3-foreground = #fff496
+ramp-capacity-4 = "  "
+ramp-capacity-4-foreground = #9fc59f
+; ramp-capacity-4-foreground = #00cd00
+; ramp-capacity-font = 1
+
+animation-charging-0 = "  "
+animation-charging-1 = "  "
+animation-charging-2 = "  "
+animation-charging-3 = "  "
+animation-charging-4 = "  "
+animation-charging-font = 1
+animation-charging-foreground = ${colors.foreground-alt}
+animation-charging-framerate = 600
+
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+
+[global/wm]
+; Adjust the _NET_WM_STRUT_PARTIAL bottom/top value
+margin-top = 5
+margin-bottom = 5
+
+
+[module/nc]
+type = custom/script
+exec = ~/.config/polybar/nc.sh
+interval = 1
+label-underline = #6f6f6f
+
+
+[module/space1]
+type = custom/text
+content = " "
+
+
+[module/space2]
+type = custom/text
+content = "  "
+
+
+[module/space3]
+type = custom/text
+content = "   "
+
+
+;=================
+; Unused modules =
+;=================
+
+; [module/bspwm]
+; type = internal/bspwm
+
+; label-focused = %index%
+; label-focused-background = ${colors.background-alt}
+; label-focused-underline= ${colors.primary}
+; label-focused-padding = 2
+
+; label-occupied = %index%
+; label-occupied-padding = 2
+
+; label-urgent = %index%!
+; label-urgent-background = ${colors.alert}
+; label-urgent-padding = 2
+
+; label-empty = %index%
+; label-empty-foreground = ${colors.foreground-alt}
+; label-empty-padding = 2
+
+
+; [module/xkeyboard]
+; type = internal/xkeyboard
+; blacklist-0 = num lock
+
+; format-prefix = " "
+; format-prefix-foreground = ${colors.foreground-alt}
+; format-prefix-underline = ${colors.secondary}
+
+; label-layout = %layout%
+; label-layout-underline = ${colors.secondary}
+
+; label-indicator-padding = 2
+; label-indicator-margin = 1
+; label-indicator-background = ${colors.secondary}
+; label-indicator-underline = ${colors.secondary}
+
+
+; [module/i3]
+; type = internal/i3
+; format = <label-state> <label-mode>
+; index-sort = true
+; wrapping-scroll = false
+
+; ; Only show workspaces on the same output as the bar
+; ;pin-workspaces = true
+
+; label-mode-padding = 2
+; label-mode-foreground = #000
+; label-mode-background = ${colors.primary}
+
+; ; focused = Active workspace on focused monitor
+; label-focused = %index%
+; label-focused-background = ${module/bspwm.label-focused-background}
+; label-focused-underline = ${module/bspwm.label-focused-underline}
+; label-focused-padding = ${module/bspwm.label-focused-padding}
+
+; ; unfocused = Inactive workspace on any monitor
+; label-unfocused = %index%
+; label-unfocused-padding = ${module/bspwm.label-occupied-padding}
+
+; ; visible = Active workspace on unfocused monitor
+; label-visible = %index%
+; label-visible-background = ${self.label-focused-background}
+; label-visible-underline = ${self.label-focused-underline}
+; label-visible-padding = ${self.label-focused-padding}
+
+; ; urgent = Workspace with urgency hint set
+; label-urgent = %index%
+; label-urgent-background = ${module/bspwm.label-urgent-background}
+; label-urgent-padding = ${module/bspwm.label-urgent-padding}
+
+
+; [module/fan]
+; type = custom/script
+; exec = sensors | grep RPM | awk '{ print $2 }'
+; interval = 3
+; format-underline = #dcdccc
+
+
+; [module/coretemps]
+; type = custom/script
+; exec-if = sensors
+; exec = sensors | grep Core | awk '{print substr($3, 2, length($3)-5)}' | tr '\n' ' ' | sed 's/ /°C  /g' | sed 's/  $//'
+; format-prefix = " "
+; format-prefix-foreground = ${colors.foreground-alt}
+
+
+; [module/temperature]
+; type = internal/temperature
+; ; Thermal zone to use; 0-3 for this device; using acpitz(1) over skylake(0)
+; thermal-zone = 1
+; warn-temperature = 60
+; interval = 3
+
+; format = <ramp> <label> 
+; format-underline = #dcdccc
+; format-warn = <label-warn>
+; format-warn-underline = #f50a4d
+
+; label = %temperature%
+; label-warn = %temperature%
+; label-warn-foreground = ${colors.secondary}
+
+; ramp-0 = " %{F#6bff49}%temperature%%{F-}"
+; ramp-1 = " %{F#f4cb24}%temperature%%{F-}"
+; ramp-2 = " %{F#ff8819}%temperature%%{F-}"
+; ramp-3 = " %{F#ff3205}%temperature%%{F-}"
+; ramp-4 = " %{F#f40202}%temperature%%{F-}"
+; ramp-foreground = #6f6f6f
+
+
+; [module/powermenu]
+; type = custom/menu
+
+; expand-right = true
+
+; format-spacing = 1
+
+; label-open = 
+; label-open-foreground = ${colors.secondary}
+; label-close =  cancel
+; label-close-foreground = ${colors.secondary}
+; label-separator = |
+; label-separator-foreground = ${colors.foreground-alt}
+
+; menu-0-0 = reboot
+; menu-0-0-exec = menu-open-1
+; menu-0-1 = power off
+; menu-0-1-exec = menu-open-2
+
+; menu-1-0 = cancel
+; menu-1-0-exec = menu-open-0
+; menu-1-1 = reboot
+; menu-1-1-exec = sudo reboot
+
+; menu-2-0 = power off
+; menu-2-0-exec = sudo poweroff
+; menu-2-1 = cancel
+; menu-2-1-exec = menu-open-0
+
+
+; [module/wlan4]
+; type = internal/network
+; interface = wlp4s0
+; interval = 3.0
+; label-connected = %{F#6f6f6f} %{F-}%downspeed%  %{F#6f6f6f} %{F-}%upspeed%
+; format-connected-underline = #6f6f6f
+
+
+; [module/xwindow]
+; type = internal/xwindow
+; label = "  %title%"
+; label-maxlen = 40
+; label-underline = #6f6f6f
+

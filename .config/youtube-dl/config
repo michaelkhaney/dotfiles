@@ -1,0 +1,3 @@
+# Save all videos to dir and rename with title.extension.
+# -o ~/media/music/%(title).%(ext)
+-o "~/media/music/%(title)s-%(id)s.%(ext)s"

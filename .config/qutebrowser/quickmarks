@@ -1,0 +1,6 @@
+settings qute://settings
+commands qute://help/commands.html
+wireless-ucf https://extranet.cst.ucf.edu/guestwireless/login.html?switch_url=http://1.1.1.1/login.html&client_mac=f8:34:41:47:fd:06&wlan=UCF_Guest&redirect=www.google.com/
+libgen http://gen.lib.rus.ec/
+ucfmail https://outlook.office.com/owa/?realm=knights.ucf.edu
+pulsesms https://messenger.klinkerapps.com/

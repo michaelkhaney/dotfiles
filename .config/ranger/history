@@ -1,0 +1,7 @@
+open_with lk
+open_with 
+open_with emacsclient
+open_with e
+search wea
+search .config
+search polybar
